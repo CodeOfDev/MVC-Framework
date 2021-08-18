@@ -1,0 +1,18 @@
+{
+    "name": "codeofdev/mvc-framework",
+    "description": "MVC Framework is a example how other MVC framework (like Laravel etc.) work. It's only a basic example. Not use in production! ;",
+    "authors": [
+        {
+            "name": "pszewczykpl",
+            "email": "pszewczykpl@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "require": {
+
+    }
+}
