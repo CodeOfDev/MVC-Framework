@@ -1,6 +1,6 @@
 <?php
 
-namespace app\core;
+namespace App\Core;
 
 /**
  * Class Router
@@ -14,7 +14,7 @@ class Router
     public Request $request;
     protected array $routes = [];
 
-    public function __construct(\App\Core\Request $request)
+    public function __construct(Request $request)
     {
         $this->request = $request;
     }
@@ -31,7 +31,17 @@ class Router
         $callback = $this->routes[$method][$path] ?? false;
         if($callback === false) {
             echo "Not found";
+            exit;
         }
-        echo call_user_func($callback);
+        if(is_string($callback)) {
+            $this->renderView($callback);
+            exit;
+        }
+        return call_user_func($callback);
+    }
+
+    public function renderView($view)
+    {
+        include_once App::$ROOT_DIR . "/views/$view.php";
     }
 }
