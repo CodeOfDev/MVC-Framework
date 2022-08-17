@@ -2,8 +2,10 @@
 
 namespace App\Core;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
- * Class Router
+ * Class Request
  *
  * @author Piotr Szewczyk
  * @package App\Core
@@ -11,6 +13,9 @@ namespace App\Core;
 
 class Request
 {
+    /**
+     * @return string
+     */
     public function getPath(): string
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
@@ -21,8 +26,50 @@ class Request
         return substr($path, 0, $position);
     }
 
-    public function getMethod(): string
+    /**
+     * @return string
+     */
+    public function method(): string
     {
         return strtolower($_SERVER['REQUEST_METHOD']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGet(): bool
+    {
+        return $this->method() === 'get';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPost(): bool
+    {
+        return $this->method() === 'post';
+    }
+
+    /**
+     * @return array
+     */
+    public function getBody(): array
+    {
+        $body = [];
+
+        if($this->method() === 'get') {
+            foreach ($_GET as $key => $value) {
+                $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+
+            }
+        }
+        if($this->method() === 'post') {
+            foreach ($_POST as $key => $value) {
+                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+
+            }
+        }
+
+        return $body;
     }
 }
